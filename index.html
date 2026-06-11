@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  ::selection{background:rgba(51,102,255,.22)}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:var(--border,#dfe3ec);border-radius:8px;border:2px solid transparent;background-clip:content-box}
+  @keyframes blink{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+  @keyframes wave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+  @keyframes grow{from{width:0}}
+  @keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slidein{from{transform:translateY(9px)}to{transform:translateY(0)}}
+  @keyframes ring{0%{transform:scale(.8);opacity:.7}100%{transform:scale(2.2);opacity:0}}
+  @keyframes drawline{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="min-height:100vh;background:var(--bg,#f5f6f9);color:var(--text,#0d1220);font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased">
+
+  <header style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 28px;background:var(--surface-glass,rgba(255,255,255,.78));backdrop-filter:blur(14px);border-bottom:1px solid var(--border,#e4e8f0)">
+    <div style="display:flex;align-items:center;gap:14px;flex-shrink:0">
+      <img src="{{ logoSrc }}" alt="akumen" style="height:26px;width:auto;display:block"/>
+      <div style="width:1px;height:24px;background:var(--border,#e4e8f0)"></div>
+      <div style="display:flex;flex-direction:column;line-height:1.1;white-space:nowrap">
+        <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:14px;letter-spacing:-.01em">Interview Simulator</span>
+        <span style="font-family:'JetBrains Mono';font-size:10px;color:var(--text-faint,#8a93a6);letter-spacing:.04em">DEVOPS · SRE · CLOUD · K8S</span>
+      </div>
+    </div>
+
+    <nav style="display:flex;align-items:center;gap:4px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+        <button onClick="{{ s.go }}" style="{{ s.style }}">
+          <span style="font-family:'JetBrains Mono';font-size:11px;opacity:.7">{{ s.num }}</span>
+          <span>{{ s.label }}</span>
+        </button>
+      </sc-for>
+    </nav>
+
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid var(--border,#e4e8f0);background:var(--surface,#fff)">
+        <span style="width:7px;height:7px;border-radius:50%;background:#2bbf6b;box-shadow:0 0 0 3px rgba(43,191,107,.18)"></span>
+        <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-dim,#5a6478)">AI online</span>
+      </div>
+      <button onClick="{{ toggleDark }}" title="Toggle theme" style="display:grid;place-items:center;width:38px;height:38px;border-radius:11px;border:1px solid var(--border,#e4e8f0);background:var(--surface,#fff);color:var(--text,#0d1220);cursor:pointer;font-size:15px">{{ themeIcon }}</button>
+    </div>
+  </header>
+
+  <main style="max-width:1160px;margin:0 auto;padding:40px 28px 72px">
+
+    <!-- ============ SCREEN 1 · REGISTER ============ -->
+    <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ true }}">
+    <section>
+      <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;min-height:62vh">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:999px;background:var(--brand-soft,#eaf0ff);color:var(--brand-ink,#2348cf);font-family:'JetBrains Mono';font-size:11px;font-weight:600;letter-spacing:.03em;margin-bottom:22px">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--brand,#3366ff)"></span>COHORT MOCK · BOOTCAMP EDITION
+          </div>
+          <h1 style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:52px;line-height:1.04;letter-spacing:-.025em;margin:0 0 18px">Practice the<br/>interview before<br/>it interviews you.</h1>
+          <p style="font-size:17px;line-height:1.6;color:var(--text-dim,#5a6478);max-width:440px;margin:0 0 28px">An AI interviewer that asks one question at a time, throws real follow-ups, runs live troubleshooting scenarios, then scores you and builds a roadmap from your weak spots.</p>
+          <div style="display:flex;gap:26px">
+            <div><div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:26px">15</div><div style="font-size:12px;color:var(--text-faint,#8a93a6);font-family:'JetBrains Mono'">topics</div></div>
+            <div style="width:1px;background:var(--border,#e4e8f0)"></div>
+            <div><div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:26px">6</div><div style="font-size:12px;color:var(--text-faint,#8a93a6);font-family:'JetBrains Mono'">roles</div></div>
+            <div style="width:1px;background:var(--border,#e4e8f0)"></div>
+            <div><div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:26px">∞</div><div style="font-size:12px;color:var(--text-faint,#8a93a6);font-family:'JetBrains Mono'">follow-ups</div></div>
+          </div>
+        </div>
+
+        <div style="background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0);border-radius:22px;padding:30px;box-shadow:0 24px 60px -28px rgba(20,30,60,.28)">
+          <div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:18px;margin-bottom:4px">Register to begin</div>
+          <div style="font-size:13px;color:var(--text-faint,#8a93a6);margin-bottom:22px">Takes 20 seconds. No camera required.</div>
+
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--text-dim,#5a6478);margin-bottom:7px">Full name</label>
+          <input value="{{ form.name }}" onInput="{{ setName }}" placeholder="e.g. Priya Sharma" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border,#e4e8f0);background:var(--surface-2,#f4f6fa);color:var(--text,#0d1220);font-size:14px;font-family:inherit;outline:none;margin-bottom:16px"/>
+
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--text-dim,#5a6478);margin-bottom:7px">Email</label>
+          <input value="{{ form.email }}" onInput="{{ setEmail }}" placeholder="you@cohort.dev" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border,#e4e8f0);background:var(--surface-2,#f4f6fa);color:var(--text,#0d1220);font-size:14px;font-family:inherit;outline:none;margin-bottom:18px"/>
+
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--text-dim,#5a6478);margin-bottom:9px">Experience level</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px">
+            <sc-for list="{{ levels }}" as="lv" hint-placeholder-count="4">
+              <button onClick="{{ lv.pick }}" style="{{ lv.style }}">{{ lv.label }}</button>
+            </sc-for>
+          </div>
+
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--text-dim,#5a6478);margin-bottom:9px">Target role</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px">
+            <sc-for list="{{ roles }}" as="r" hint-placeholder-count="6">
+              <button onClick="{{ r.pick }}" style="{{ r.style }}">{{ r.label }}</button>
+            </sc-for>
+          </div>
+
+          <button onClick="{{ goCategories }}" style="{{ regBtnStyle }}">{{ regBtnLabel }} <span style="font-family:'JetBrains Mono'">→</span></button>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- ============ SCREEN 2 · CATEGORIES ============ -->
+    <sc-if value="{{ isCategories }}" hint-placeholder-val="{{ false }}">
+    <section>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:8px">
+        <div>
+          <div style="font-family:'JetBrains Mono';font-size:12px;color:var(--brand,#3366ff);font-weight:600;letter-spacing:.05em;margin-bottom:8px">STEP 02 / BUILD YOUR SET</div>
+          <h2 style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:34px;letter-spacing:-.02em;margin:0">Pick your interview topics</h2>
+          <p style="color:var(--text-dim,#5a6478);font-size:15px;margin:8px 0 0">The AI weights questions toward what you select. Choose 3–6 for a focused 20-minute session.</p>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:40px;line-height:1;color:var(--brand,#3366ff)">{{ selCount }}</div>
+          <div style="font-size:12px;color:var(--text-faint,#8a93a6);font-family:'JetBrains Mono'">selected</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:28px 0 32px">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="15">
+          <button onClick="{{ c.toggle }}" style="{{ c.style }}">
+            <span style="{{ c.tagStyle }}">{{ c.tag }}</span>
+            <span style="font-weight:600;font-size:14px;text-align:left;line-height:1.2">{{ c.name }}</span>
+            <span style="{{ c.checkStyle }}">{{ c.check }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border-radius:16px;background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0)">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--brand-soft,#eaf0ff);color:var(--brand,#3366ff);font-size:20px">⚙</div>
+          <div>
+            <div style="font-weight:600;font-size:14px">Adaptive difficulty is on</div>
+            <div style="font-size:13px;color:var(--text-dim,#5a6478)">Questions get harder as you answer well, and ease off when you struggle.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button onClick="{{ goRegister }}" style="padding:13px 20px;border-radius:12px;border:1px solid var(--border,#e4e8f0);background:transparent;color:var(--text,#0d1220);font-weight:600;font-size:14px;cursor:pointer;font-family:inherit">← Back</button>
+          <button onClick="{{ startInterview }}" style="{{ startBtnStyle }}">Start interview <span style="font-family:'JetBrains Mono'">→</span></button>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- ============ SCREEN 3 · INTERVIEW ============ -->
+    <sc-if value="{{ isInterview }}" hint-placeholder-val="{{ false }}">
+    <section>
+      <div style="display:grid;grid-template-columns:1fr 296px;gap:22px;align-items:start">
+
+        <div style="background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;height:74vh;box-shadow:0 24px 60px -34px rgba(20,30,60,.26)">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--border,#e4e8f0)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="position:relative;display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:var(--brand,#3366ff);color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700">AI</div>
+              <div>
+                <div style="font-weight:600;font-size:14px">Senior Interviewer</div>
+                <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6)">{{ roundLabel }}</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px">
+              <div style="font-family:'JetBrains Mono';font-size:12px;color:var(--text-dim,#5a6478)">Q {{ qNum }} / {{ qTotal }}</div>
+              <div style="width:120px;height:6px;border-radius:999px;background:var(--surface-2,#eef1f6);overflow:hidden">
+                <div style="height:100%;background:var(--brand,#3366ff);border-radius:999px;width:{{ qProgress }};transition:width .5s ease"></div>
+              </div>
+            </div>
+          </div>
+
+          <div ref="{{ threadRef }}" style="flex:1;overflow-y:auto;padding:24px 22px;display:flex;flex-direction:column;gap:16px">
+            <sc-for list="{{ messages }}" as="m" hint-placeholder-count="2">
+              <div style="{{ m.rowStyle }}">
+                <div style="{{ m.bubbleStyle }}">
+                  <div style="{{ m.metaStyle }}">{{ m.meta }}</div>
+                  <div style="font-size:15px;line-height:1.55">{{ m.text }}</div>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ thinking }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:6px;align-items:center;padding:4px 2px">
+                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brand,#3366ff);animation:blink 1.2s infinite 0s"></span>
+                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brand,#3366ff);animation:blink 1.2s infinite .2s"></span>
+                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brand,#3366ff);animation:blink 1.2s infinite .4s"></span>
+                <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6);margin-left:6px">evaluating & forming next question…</span>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="border-top:1px solid var(--border,#e4e8f0);padding:16px 18px;background:var(--surface-2,#f6f8fb)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+              <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6);letter-spacing:.05em">SELECT ONE ANSWER</span>
+              <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6)">multiple choice · auto-graded</span>
+            </div>
+            <div style="display:grid;gap:8px">
+              <sc-for list="{{ currentOptions }}" as="o" hint-placeholder-count="4">
+                <button onClick="{{ o.pick }}" style="{{ o.style }}">
+                  <span style="{{ o.letterStyle }}">{{ o.letter }}</span>
+                  <span>{{ o.text }}</span>
+                  <span style="{{ o.markStyle }}">{{ o.mark }}</span>
+                </button>
+              </sc-for>
+            </div>
+            <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;justify-content:flex-end;margin-top:12px">
+                <button onClick="{{ nextQuestion }}" style="padding:12px 22px;border-radius:12px;border:none;background:var(--brand,#3366ff);color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:14px;cursor:pointer;box-shadow:0 10px 22px -12px rgba(51,102,255,.6)">{{ nextLabel }}</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <aside style="display:flex;flex-direction:column;gap:14px;position:sticky;top:90px">
+          <div style="background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0);border-radius:18px;padding:18px">
+            <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6);letter-spacing:.05em;margin-bottom:14px">LIVE SIGNAL</div>
+            <sc-for list="{{ liveSignals }}" as="g" hint-placeholder-count="4">
+              <div style="margin-bottom:13px">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span style="color:var(--text-dim,#5a6478)">{{ g.label }}</span><span style="font-family:'JetBrains Mono';font-weight:600">{{ g.val }}</span></div>
+                <div style="height:6px;border-radius:999px;background:var(--surface-2,#eef1f6);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{ g.color }};width:{{ g.w }};transition:width .6s ease"></div></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0);border-radius:18px;padding:18px">
+            <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6);letter-spacing:.05em;margin-bottom:12px">SCENARIO ON DECK</div>
+            <div style="display:flex;gap:11px;align-items:flex-start">
+              <div style="font-size:20px">{{ scenarioIcon }}</div>
+              <div><div style="font-weight:600;font-size:14px;margin-bottom:3px">{{ scenarioTitle }}</div><div style="font-size:12.5px;color:var(--text-dim,#5a6478);line-height:1.5">{{ scenarioDesc }}</div></div>
+            </div>
+          </div>
+          <button onClick="{{ finishInterview }}" style="padding:13px;border-radius:14px;border:1px dashed var(--border,#cfd6e4);background:transparent;color:var(--text-dim,#5a6478);font-weight:600;font-size:13px;cursor:pointer;font-family:inherit">End & generate report</button>
+        </aside>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- ============ SCREEN 4 · REPORT ============ -->
+    <sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
+    <section>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:26px">
+        <div>
+          <div style="font-family:'JetBrains Mono';font-size:12px;color:var(--brand,#3366ff);font-weight:600;letter-spacing:.05em;margin-bottom:8px">STEP 04 / EVALUATION REPORT</div>
+          <h2 style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:34px;letter-spacing:-.02em;margin:0">{{ candidateName }}'s scorecard</h2>
+          <p style="color:var(--text-dim,#56607a);font-size:15px;margin:8px 0 0">{{ candidateRole }} · evaluated on accuracy, problem solving, communication, confidence & best practices.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:22px;padding:18px 24px;border-radius:20px;background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0)">
+          <div style="position:relative;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;{{ ringStyle }}">
+            <div style="position:absolute;inset:9px;border-radius:50%;background:var(--surface,#fff);display:grid;place-items:center">
+              <div style="text-align:center"><div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:28px;line-height:1">{{ overall }}</div><div style="font-family:'JetBrains Mono';font-size:9px;color:var(--text-faint,#8a93a6)">/ 100</div></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6);margin-bottom:6px">OVERALL · {{ overallLabel }}</div>
+            <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:999px;background:{{ badgeColor }};color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:14px"><span>◆</span>{{ badgeName }} Badge</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:20px;margin-bottom:20px">
+        <div style="background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0);border-radius:20px;padding:24px">
+          <div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:16px;margin-bottom:18px">Category breakdown</div>
+          <sc-for list="{{ scoreRows }}" as="c" hint-placeholder-count="6">
+            <div style="margin-bottom:16px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px"><span style="font-weight:600;font-size:14px">{{ c.name }}</span><span style="{{ c.numStyle }}">{{ c.score }}/100</span></div>
+              <div style="height:9px;border-radius:999px;background:var(--surface-2,#eef1f6);overflow:hidden"><div style="{{ c.barStyle }}"></div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0);border-radius:20px;padding:22px">
+            <div style="display:flex;align-items:center;gap:9px;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:15px;margin-bottom:14px;color:#2bbf6b">✓ Strengths</div>
+            <sc-for list="{{ strengths }}" as="s" hint-placeholder-count="3">
+              <div style="display:flex;gap:9px;align-items:flex-start;font-size:14px;line-height:1.5;margin-bottom:9px;color:var(--text,#0d1220)"><span style="color:#2bbf6b;margin-top:1px">●</span>{{ s }}</div>
+            </sc-for>
+          </div>
+          <div style="background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0);border-radius:20px;padding:22px">
+            <div style="display:flex;align-items:center;gap:9px;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:15px;margin-bottom:14px;color:#f0a020">△ Areas to improve</div>
+            <sc-for list="{{ improve }}" as="s" hint-placeholder-count="3">
+              <div style="display:flex;gap:9px;align-items:flex-start;font-size:14px;line-height:1.5;margin-bottom:9px;color:var(--text,#0d1220)"><span style="color:#f0a020;margin-top:1px">●</span>{{ s }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:22px 24px;border-radius:20px;background:var(--brand,#3366ff);color:#fff">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-family:'JetBrains Mono';font-size:11px;opacity:.8;letter-spacing:.05em">RECOMMENDED NEXT TOPICS</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <sc-for list="{{ recommend }}" as="t" hint-placeholder-count="3">
+              <span style="padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.16);font-weight:600;font-size:13px">{{ t }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button onClick="{{ goLeaderboard }}" style="padding:13px 20px;border-radius:12px;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit">View leaderboard</button>
+          <button onClick="{{ goRoadmap }}" style="padding:13px 22px;border-radius:12px;border:none;background:#fff;color:var(--brand,#3366ff);font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:14px;cursor:pointer">Build my roadmap →</button>
+        </div>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- ============ SCREEN 5 · ROADMAP ============ -->
+    <sc-if value="{{ isRoadmap }}" hint-placeholder-val="{{ false }}">
+    <section>
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="font-family:'JetBrains Mono';font-size:12px;color:var(--brand,#3366ff);font-weight:600;letter-spacing:.05em;margin-bottom:8px">STEP 05 / PERSONALIZED PATH</div>
+        <h2 style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:34px;letter-spacing:-.02em;margin:0">Your 4-week learning roadmap</h2>
+        <p style="color:var(--text-dim,#56607a);font-size:15px;margin:8px 0 0">Sequenced from your weakest areas up. One focus per week — finish the path and re-test.</p>
+      </div>
+
+      <div style="position:relative;max-width:860px;margin:34px auto 0;padding:10px 0">
+        <div style="position:absolute;left:50%;top:24px;bottom:54px;width:3px;transform:translateX(-50%);background:linear-gradient(var(--brand,#3366ff),var(--brand,#3366ff) 78%,var(--border,#e4e8f0));border-radius:2px"></div>
+        <sc-for list="{{ roadNodes }}" as="r" hint-placeholder-count="4">
+          <div style="display:grid;grid-template-columns:1fr 64px 1fr;align-items:center;margin-bottom:30px;position:relative">
+            <div>
+              <sc-if value="{{ r.isLeft }}" hint-placeholder-val="{{ true }}">
+                <div style="{{ r.cardStyle }}">
+                  <span style="{{ r.tagStyle }}">{{ r.tag }}</span>
+                  <div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:18px;margin-bottom:5px">{{ r.title }}</div>
+                  <div style="font-size:13px;color:var(--text-dim,#56607a);line-height:1.5">{{ r.focus }}</div>
+                  <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6);margin-top:10px">{{ r.wk }}</div>
+                </div>
+              </sc-if>
+            </div>
+            <div style="display:grid;place-items:center"><div style="{{ r.nodeStyle }}">{{ r.num }}</div></div>
+            <div>
+              <sc-if value="{{ r.isRight }}" hint-placeholder-val="{{ false }}">
+                <div style="{{ r.cardStyle }}">
+                  <span style="{{ r.tagStyle }}">{{ r.tag }}</span>
+                  <div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:18px;margin-bottom:5px">{{ r.title }}</div>
+                  <div style="font-size:13px;color:var(--text-dim,#56607a);line-height:1.5">{{ r.focus }}</div>
+                  <div style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6);margin-top:10px">{{ r.wk }}</div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display:grid;grid-template-columns:1fr 64px 1fr;align-items:center">
+          <div></div>
+          <div style="display:grid;place-items:center"><div style="position:relative;z-index:2;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#2bbf6b;color:#fff;font-size:20px;box-shadow:0 0 0 6px var(--bg,#f4f6f9)">★</div></div>
+          <div><div style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:16px">Re-interview & level up</div><div style="font-size:13px;color:var(--text-dim,#56607a)">Target overall 85+ for interview-ready.</div></div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:36px">
+        <button onClick="{{ goLeaderboard }}" style="padding:13px 22px;border-radius:12px;border:1px solid var(--border,#e4e8f0);background:var(--surface,#fff);color:var(--text,#0d1220);font-weight:600;font-size:14px;cursor:pointer;font-family:inherit">See where I rank →</button>
+        <button onClick="{{ restart }}" style="padding:13px 22px;border-radius:12px;border:none;background:var(--brand,#3366ff);color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:14px;cursor:pointer">Start a new session</button>
+      </div>
+    </section>
+    </sc-if>
+
+    <!-- ============ SCREEN 6 · LEADERBOARD ============ -->
+    <sc-if value="{{ isLeaderboard }}" hint-placeholder-val="{{ false }}">
+    <section>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px">
+        <div>
+          <div style="font-family:'JetBrains Mono';font-size:12px;color:var(--brand,#3366ff);font-weight:600;letter-spacing:.05em;margin-bottom:8px">COHORT LEADERBOARD</div>
+          <h2 style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:34px;letter-spacing:-.02em;margin:0">This week's ranking</h2>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6);margin-right:4px">BADGES</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-family:'JetBrains Mono';font-size:11px;font-weight:600;background:#c0845722;color:#c08457">◆ Bronze</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-family:'JetBrains Mono';font-size:11px;font-weight:600;background:#9aa6bd22;color:#8a93a6">◆ Silver</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-family:'JetBrains Mono';font-size:11px;font-weight:600;background:#f0a02022;color:#f0a020">◆ Gold</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-family:'JetBrains Mono';font-size:11px;font-weight:600;background:#7b5cff22;color:#7b5cff">◆ Master</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:48px 1fr 130px 120px 70px;gap:14px;padding:0 18px 10px;font-family:'JetBrains Mono';font-size:11px;color:var(--text-faint,#8a93a6);letter-spacing:.04em">
+        <span>RANK</span><span>CANDIDATE</span><span>ROLE</span><span>BADGE</span><span style="text-align:right">SCORE</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <sc-for list="{{ lbRows }}" as="r" hint-placeholder-count="6">
+          <div style="{{ r.rowStyle }}">
+            <span style="font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--text-dim,#56607a)">{{ r.rank }}</span>
+            <span style="font-weight:600;font-size:15px">{{ r.name }}</span>
+            <span style="font-size:13px;color:var(--text-dim,#56607a)">{{ r.role }}</span>
+            <span><span style="{{ r.badgeStyle }}">◆ {{ r.badge }}</span></span>
+            <span style="text-align:right;font-family:'JetBrains Mono';font-weight:700;font-size:16px;color:var(--brand,#3366ff)">{{ r.score }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:32px">
+        <button onClick="{{ goRoadmap }}" style="padding:13px 22px;border-radius:12px;border:1px solid var(--border,#e4e8f0);background:var(--surface,#fff);color:var(--text,#0d1220);font-weight:600;font-size:14px;cursor:pointer;font-family:inherit">← Back to roadmap</button>
+        <button onClick="{{ restart }}" style="padding:13px 22px;border-radius:12px;border:none;background:var(--brand,#3366ff);color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:14px;cursor:pointer">New interview</button>
+      </div>
+    </section>
+    </sc-if>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1160,&quot;height&quot;:820}}">
+class Component extends DCLogic {
+  state = {
+    dark: false,
+    screen: 'register',
+    form: { name: '', email: '', level: null, role: null },
+    selected: ['Docker','Kubernetes','Linux','CI/CD'],
+    idx: 0,
+    messages: [],
+    picked: null,
+    answered: false,
+    answers: [],
+    answerText: '',
+    thinking: false,
+    recording: false,
+    recTime: '0:00',
+    liveTranscript: '',
+    revealed: false,
+    wave: Array.from({length:28},()=>Math.random())
+  };
+
+  LEVELS = ['Fresher','Junior · 0–2y','Mid-Level · 3–5y','Senior · 5+y'];
+  ROLES = ['DevOps Engineer','Cloud Engineer','Site Reliability Engineer','Platform Engineer','Kubernetes Administrator','DevSecOps Engineer'];
+  CATS = [
+    {name:'Linux',tag:'sh'},{name:'Networking',tag:'net'},{name:'Docker',tag:'dkr'},
+    {name:'Kubernetes',tag:'k8s'},{name:'AWS',tag:'aws'},{name:'Azure',tag:'az'},
+    {name:'Terraform',tag:'tf'},{name:'Ansible',tag:'ans'},{name:'Jenkins',tag:'jnk'},
+    {name:'Git & GitHub',tag:'git'},{name:'CI/CD',tag:'cd'},{name:'Monitoring',tag:'obs'},
+    {name:'Security',tag:'sec'},{name:'System Design',tag:'sys'},{name:'Troubleshooting',tag:'sos'}
+  ];
+  SCRIPT = [
+    {cat:'Docker', text:'Which statement best describes the difference between a Docker image and a Docker container?',
+      options:[
+        'An image is a running process; a container is a saved snapshot of it',
+        'An image is an immutable, layered template; a container is a running, writable instance of it',
+        'They are the same thing — just two names for one concept',
+        'A container builds the image at runtime from the Dockerfile'],
+      correct:1, explain:'The image is the read-only, layered build artifact. A container is a running, writable instance created from that image.'},
+    {cat:'Docker', follow:true, text:'A container holding important data is deleted. How do you make that data survive next time?',
+      options:[
+        'Commit the container to a new image after every write',
+        'Run the container with --restart=always',
+        'Store the data in a named volume or bind mount, outside the writable layer',
+        'Raise the container’s memory limit'],
+      correct:2, explain:'Volumes and bind mounts live outside the container’s ephemeral writable layer, so the data persists across deletes.'},
+    {cat:'Kubernetes', text:'A pod is stuck in Pending. What is the FIRST thing you should check?',
+      options:[
+        'kubectl describe pod and read the Events',
+        'Delete and recreate the whole deployment',
+        'Restart the kubelet on every node',
+        'Scale the deployment to 0 and back up'],
+      correct:0, explain:'describe surfaces the scheduling events — insufficient cpu/memory, taints, node selectors, unbound PVCs — before you change anything.'},
+    {cat:'Kubernetes', follow:true, text:'describe shows “0/3 nodes available: insufficient cpu.” What is the best next move?',
+      options:[
+        'Add more replicas to the deployment',
+        'Lower the pod’s CPU requests, or add node capacity / a Cluster Autoscaler',
+        'Switch the Service to NodePort',
+        'Delete and reinstall the CNI plugin'],
+      correct:1, explain:'The scheduler can’t fit the CPU request. Reduce the request or grow the node pool (Cluster Autoscaler).'},
+    {cat:'Linux', text:'Load average suddenly hits 50. Which check best separates a CPU-bound cause from an I/O-bound one?',
+      options:[
+        'df -h to inspect disk usage',
+        'free -m to inspect memory only',
+        'vmstat / iostat — compare run-queue vs I/O wait',
+        'systemctl restart networking'],
+      correct:2, explain:'vmstat’s r (run queue) vs wa (I/O wait) columns, plus iostat, tell you whether it’s CPU saturation or disk I/O wait.'},
+    {cat:'CI/CD', text:'A Jenkins pipeline is green on build but fails only on the deploy stage. Best way to isolate it?',
+      options:[
+        'Re-run the whole pipeline until it passes',
+        'Disable the deploy stage permanently',
+        'Run the deploy step alone against staging and check the agent’s credentials / kubeconfig',
+        'Increase the global build timeout'],
+      correct:2, explain:'Isolate the failing stage: reproduce deploy standalone, diff the env vs build, and verify the deploy agent’s creds/kubeconfig.'},
+    {cat:'Terraform', text:'terraform plan shows drift on a resource nobody changed in code. What happened, and how do you fix it?',
+      options:[
+        'Terraform randomly regenerates resources; ignore it',
+        'The state file is corrupt and must be deleted',
+        'Someone changed it out-of-band — reconcile by import/apply to converge state',
+        'The provider version is too new; downgrade'],
+      correct:2, explain:'An out-of-band (console) change diverged from code. Reconcile: terraform import & codify it, or re-apply to converge — then lock it with policy/CI.'}
+  ];
+  SCENARIOS = [
+    {cat:'Docker', icon:'🐳', title:'Container restart loop', desc:'A service container repeatedly restarts every ~12s. Inspect logs, exit codes and healthcheck.'},
+    {cat:'Kubernetes', icon:'☸', title:'CrashLoopBackOff', desc:'web-api pod cycling. Read events, last-state, and the liveness probe config.'},
+    {cat:'Linux', icon:'🐧', title:'Disk at 100%', desc:'/ is full. Find the offending path with du, rotate logs, reclaim safely.'},
+    {cat:'CI/CD', icon:'⚙', title:'Pipeline red on deploy', desc:'Build is green, deploy stage fails. Bisect the stage and check creds.'},
+    {cat:'Terraform', icon:'🏗', title:'State drift detected', desc:'Console change diverged from code. Reconcile without nuking resources.'}
+  ];
+
+  setRoot = (el)=>{ this._rootEl = el; if(el) this.applyTheme(); };
+  setThread = (el)=>{ this._threadEl = el; };
+  componentDidMount(){ this.applyTheme(); }
+  componentDidUpdate(prev){
+    if(prev.dark!==this.state.dark) this.applyTheme();
+    if(this.state.screen==='report' && prev.screen!=='report' && !this.state.revealed){
+      setTimeout(()=>{ if(this.state.screen==='report') this.setState({revealed:true}); },120);
+    }
+    if(this._threadEl && this.state.messages.length!==(prev.messages||[]).length){
+      const t=this._threadEl; requestAnimationFrame(()=>{ t.scrollTop=t.scrollHeight; });
+    }
+  }
+  applyTheme(){
+    const r=document.documentElement; if(!r) return;
+    const v = this.state.dark ? {
+      '--bg':'#0a0d15','--surface':'#11161f','--surface-2':'#161c27','--surface-glass':'rgba(13,17,25,.8)',
+      '--border':'#232a39','--text':'#eef1f7','--text-dim':'#9aa6bd','--text-faint':'#5f6b82',
+      '--brand':'#5d83ff','--brand-ink':'#a9bfff','--brand-soft':'rgba(93,131,255,.15)'
+    } : {
+      '--bg':'#f4f6f9','--surface':'#ffffff','--surface-2':'#f3f5f9','--surface-glass':'rgba(255,255,255,.78)',
+      '--border':'#e4e8f0','--text':'#0d1220','--text-dim':'#56607a','--text-faint':'#8a93a6',
+      '--brand':'#3366ff','--brand-ink':'#2348cf','--brand-soft':'#eaf0ff'
+    };
+    for(const k in v) r.style.setProperty(k,v[k]);
+  }
+
+  go(s){ this.setState({screen:s}); }
+  toggleDark(){ this.setState(p=>({dark:!p.dark})); }
+  setName(e){ const x=e.target.value; this.setState(p=>({form:{...p.form,name:x}})); }
+  setEmail(e){ const x=e.target.value; this.setState(p=>({form:{...p.form,email:x}})); }
+  pickLevel(l){ this.setState(p=>({form:{...p.form,level:l}})); }
+  pickRole(r){ this.setState(p=>({form:{...p.form,role:r}})); }
+  toggleCat(n){ this.setState(p=>{ const s=p.selected.includes(n)?p.selected.filter(x=>x!==n):[...p.selected,n]; return {selected:s}; }); }
+  setAnswer(e){ this.setState({answerText:e.target.value}); }
+
+  startInterview(){
+    if(!this.state.selected.length) return;
+    const first=this.SCRIPT[0];
+    this.setState({screen:'interview', idx:0, picked:null, answered:false, answers:[], thinking:false,
+      messages:[{role:'ai',cat:first.cat,text:first.text}]});
+  }
+  selectOption(i){
+    if(this.state.answered||this.state.thinking) return;
+    const q=this.SCRIPT[this.state.idx];
+    const correct = i===q.correct;
+    const ans=[...this.state.answers,{cat:q.cat,correct}];
+    this.setState(p=>({picked:i,answered:true,answers:ans,thinking:true,
+      messages:[...p.messages,{role:'me',text:String.fromCharCode(65+i)+'.  '+q.options[i]}]}));
+    setTimeout(()=>{
+      this.setState(p=>({thinking:false,
+        messages:[...p.messages,{role:'ai',cat:q.cat,feedback:true,correct,
+          text:(correct?'✓ Correct.  ':'✗ The best answer is '+String.fromCharCode(65+q.correct)+'.  ')+q.explain}]}));
+    },700);
+  }
+  _streak(a){ let s=0; for(let i=a.length-1;i>=0;i--){ if(a[i].correct) s++; else break; } return s; }
+  nextQuestion(){
+    if(!this.state.answered||this.state.thinking) return;
+    const next=this.state.idx+1;
+    if(next<this.SCRIPT.length){
+      const q=this.SCRIPT[next];
+      this.setState(p=>({idx:next,picked:null,answered:false,
+        messages:[...p.messages,{role:'ai',cat:q.cat,text:q.text,follow:q.follow}]}));
+    } else {
+      this.finishInterview();
+    }
+  }
+  finishInterview(){
+    this.setState({screen:'report',revealed:false});
+    setTimeout(()=>this.setState({revealed:true}),120);
+  }
+
+  // ---- helper styles ----
+  _chip(active){ return `display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:11px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:transform .12s ease,box-shadow .15s ease;border:1px solid ${active?'var(--brand,#3366ff)':'var(--border,#e4e8f0)'};background:${active?'var(--brand-soft,#eaf0ff)':'var(--surface-2,#f4f6fa)'};color:${active?'var(--brand-ink,#2348cf)':'var(--text-dim,#56607a)'}`; }
+
+  renderVals(){
+    const st=this.state, f=st.form;
+    const dark=st.dark;
+    const screen=st.screen;
+    const order=['register','categories','interview','report','roadmap'];
+    const curIdx=order.indexOf(screen)<0?0:order.indexOf(screen);
+
+    const stepDefs=[['01','Register','register'],['02','Topics','categories'],['03','Interview','interview'],['04','Report','report'],['05','Roadmap','roadmap']];
+    const steps=stepDefs.map((s,i)=>{
+      const active=s[2]===screen; const done=i<curIdx;
+      return { num:s[0], label:s[1], go:()=>this.go(s[2]),
+        style:`display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:10px;border:none;cursor:pointer;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:13px;background:${active?'var(--brand,#3366ff)':'transparent'};color:${active?'#fff':done?'var(--text,#0d1220)':'var(--text-faint,#8a93a6)'}`};
+    });
+
+    // register
+    const levels=this.LEVELS.map(l=>({label:l,pick:()=>this.pickLevel(l),style:this._chip(f.level===l)+';justify-content:center;padding:11px 8px;text-align:center'}));
+    const roles=this.ROLES.map(r=>({label:r,pick:()=>this.pickRole(r),style:this._chip(f.role===r)}));
+    const regReady=f.name && f.level && f.role;
+    const regBtnStyle=`width:100%;margin-top:2px;padding:14px;border-radius:13px;border:none;cursor:pointer;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s ease,box-shadow .2s ease;background:${regReady?'var(--brand,#3366ff)':'var(--surface-2,#eef1f6)'};color:${regReady?'#fff':'var(--text-faint,#8a93a6)'};box-shadow:${regReady?'0 12px 26px -12px rgba(51,102,255,.6)':'none'}`;
+
+    // categories
+    const cats=this.CATS.map(c=>{
+      const on=st.selected.includes(c.name);
+      return { name:c.name, tag:c.tag, toggle:()=>this.toggleCat(c.name),
+        style:`position:relative;display:flex;flex-direction:column;gap:9px;align-items:flex-start;padding:15px;border-radius:15px;cursor:pointer;font-family:inherit;transition:transform .12s ease,box-shadow .15s ease;border:1px solid ${on?'var(--brand,#3366ff)':'var(--border,#e4e8f0)'};background:${on?'var(--brand-soft,#eaf0ff)':'var(--surface,#fff)'};color:var(--text,#0d1220)`,
+        tagStyle:`font-family:'JetBrains Mono';font-size:10px;font-weight:700;letter-spacing:.04em;padding:3px 7px;border-radius:6px;background:${on?'var(--brand,#3366ff)':'var(--surface-2,#eef1f6)'};color:${on?'#fff':'var(--text-faint,#8a93a6)'}`,
+        check:on?'✓':'', checkStyle:`position:absolute;top:12px;right:12px;color:var(--brand,#3366ff);font-weight:700;font-size:14px` };
+    });
+    const startBtnStyle=`padding:13px 22px;border-radius:12px;border:none;cursor:pointer;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;font-size:14px;background:var(--brand,#3366ff);color:#fff;box-shadow:0 12px 26px -12px rgba(51,102,255,.6)`;
+
+    // interview
+    const messages=st.messages.map(m=>{
+      const ai=m.role==='ai', fb=m.feedback, fbCol=m.correct?'#2bbf6b':'#e0563b';
+      return { text:m.text,
+        meta: ai?(fb?(m.correct?'EVALUATION · CORRECT':'EVALUATION · REVIEW'):(m.follow?'FOLLOW-UP · '+m.cat:'QUESTION · '+m.cat)):'YOUR PICK',
+        rowStyle:`display:flex;${ai?'justify-content:flex-start':'justify-content:flex-end'};animation:slidein .3s ease`,
+        bubbleStyle:`max-width:80%;padding:14px 17px;border-radius:${ai?'4px 16px 16px 16px':'16px 4px 16px 16px'};border:1px solid ${fb?fbCol+'66':(ai?'var(--border,#e4e8f0)':'transparent')};background:${fb?fbCol+'14':(ai?'var(--surface-2,#f4f6fa)':'var(--brand,#3366ff)')};color:${ai?'var(--text,#0d1220)':'#fff'}`,
+        metaStyle:`font-family:'JetBrains Mono';font-size:10px;font-weight:600;letter-spacing:.05em;margin-bottom:6px;opacity:${ai?'.85':'.75'};color:${fb?fbCol:(ai?'var(--brand,#3366ff)':'#fff')}` };
+    });
+    const qTotal=this.SCRIPT.length, qNum=Math.min(st.idx+1,qTotal);
+    const curQ=this.SCRIPT[st.idx]||this.SCRIPT[0];
+    const sc=this.SCENARIOS[st.idx%this.SCENARIOS.length];
+    const currentOptions=(curQ.options||[]).map((opt,i)=>{
+      const isPicked=st.picked===i, isCorrect=i===curQ.correct, answered=st.answered;
+      let bg='var(--surface,#fff)', bd='var(--border,#e4e8f0)', col='var(--text,#0d1220)', lbBg='var(--surface-2,#eef1f6)', lbCol='var(--text-dim,#56607a)', mark='';
+      if(answered){
+        if(isCorrect){ bg='rgba(43,191,107,.12)'; bd='#2bbf6b'; lbBg='#2bbf6b'; lbCol='#fff'; mark='✓'; }
+        else if(isPicked){ bg='rgba(224,86,59,.12)'; bd='#e0563b'; lbBg='#e0563b'; lbCol='#fff'; mark='✗'; }
+        else { col='var(--text-faint,#8a93a6)'; }
+      }
+      return { text:opt, letter:String.fromCharCode(65+i), mark, pick:()=>this.selectOption(i),
+        style:`display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:13px 15px;border-radius:13px;border:1.5px solid ${bd};background:${bg};color:${col};cursor:${answered?'default':'pointer'};font-family:inherit;font-size:14px;line-height:1.4;transition:transform .1s ease,box-shadow .15s ease`,
+        letterStyle:`flex-shrink:0;display:grid;place-items:center;width:26px;height:26px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;background:${lbBg};color:${lbCol}`,
+        markStyle:`margin-left:auto;font-weight:700;font-size:16px;color:${isCorrect?'#2bbf6b':'#e0563b'}` };
+    });
+    const isLastQ=st.idx>=this.SCRIPT.length-1;
+    const ansN=st.answers.length, ansC=st.answers.filter(a=>a.correct).length, acc=ansN?Math.round(ansC/ansN*100):0;
+    const grade=p=>p>=90?'A':p>=80?'A−':p>=70?'B+':p>=60?'B':p>=40?'C':'—';
+    const liveSignals=[
+      {label:'Accuracy',val:ansN?grade(acc):'—',w:(ansN?acc:0)+'%',color:'#2bbf6b'},
+      {label:'Answered',val:ansN+' / '+qTotal,w:Math.round(ansN/qTotal*100)+'%',color:'#3366ff'},
+      {label:'Correct',val:ansC+' / '+(ansN||qTotal),w:(ansN?Math.round(ansC/ansN*100):0)+'%',color:'#7b5cff'},
+      {label:'Streak',val:String(this._streak(st.answers)),w:Math.min(100,this._streak(st.answers)*25)+'%',color:'#f0a020'}
+    ];
+
+    // ---- report (derived from MCQ answers) ----
+    const byCat={};
+    st.answers.forEach(a=>{ (byCat[a.cat]=byCat[a.cat]||[]).push(a.correct); });
+    const catScore=arr=>Math.round(48+50*(arr.filter(Boolean).length/arr.length));
+    const repCats=['Docker','Kubernetes','Linux','CI/CD','Terraform'];
+    const scores=repCats.map(n=>({name:n, s: byCat[n]?catScore(byCat[n]):72}));
+    const correctTotal=st.answers.filter(a=>a.correct).length;
+    const overall = st.answers.length ? Math.round(correctTotal/st.answers.length*100) : Math.round(scores.reduce((a,b)=>a+b.s,0)/scores.length);
+    const badgeTier = overall>=90?{name:'DevOps Master',color:'#7b5cff'}:overall>=80?{name:'Gold',color:'#f0a020'}:overall>=70?{name:'Silver',color:'#9aa6bd'}:{name:'Bronze',color:'#c08457'};
+    const scoreRows=scores.map(c=>{
+      const col=c.s>=85?'#2bbf6b':c.s>=72?'#3366ff':'#f0a020';
+      return {name:c.name,score:c.s,
+        barStyle:`height:100%;border-radius:999px;background:${col};width:${st.revealed?c.s+'%':'0%'};transition:width 1s cubic-bezier(.2,.7,.2,1)`,
+        numStyle:`font-family:'JetBrains Mono';font-weight:700;font-size:13px;color:${col}`};
+    });
+    const ringStyle=`background:conic-gradient(var(--brand,#3366ff) ${st.revealed?overall*3.6:0}deg, var(--surface-2,#eef1f6) 0);transition:background 1.1s ease`;
+    const sortedScores=[...scores].sort((a,b)=>b.s-a.s);
+    const strengths=sortedScores.slice(0,3).map(c=>`Strong on ${c.name} — ${c.s}/100`);
+    const improve=sortedScores.slice(-3).reverse().map(c=>`${c.name} fundamentals — ${c.s}/100`);
+    const recommend=['Kubernetes Networking','Terraform Modules','GitOps with Argo CD'];
+
+    // ---- roadmap ----
+    const roadmap=[
+      {wk:'WEEK 1',title:'Linux Administration',tag:'Foundations',focus:'Processes, signals, load average, disk & permissions',side:'left'},
+      {wk:'WEEK 2',title:'Docker Deep Dive',tag:'Containers',focus:'Layers, volumes, networks, multi-stage builds',side:'right'},
+      {wk:'WEEK 3',title:'Kubernetes Troubleshooting',tag:'Orchestration',focus:'Pending pods, CrashLoopBackOff, services & probes',side:'left'},
+      {wk:'WEEK 4',title:'Terraform & IaC',tag:'Infrastructure',focus:'State, drift, modules, remote backends, policy',side:'right'}
+    ];
+    const roadNodes=roadmap.map((r,i)=>({...r,num:i+1,isLeft:r.side==='left',isRight:r.side==='right',
+      cardStyle:`background:var(--surface,#fff);border:1px solid var(--border,#e4e8f0);border-radius:18px;padding:18px 20px;box-shadow:0 18px 40px -30px rgba(20,30,60,.35);${r.side==='left'?'text-align:right':''}`,
+      tagStyle:`display:inline-block;font-family:'JetBrains Mono';font-size:10px;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:6px;background:var(--brand-soft,#eaf0ff);color:var(--brand-ink,#2348cf);margin-bottom:9px`,
+      nodeStyle:`position:relative;z-index:2;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--brand,#3366ff);color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:17px;box-shadow:0 0 0 6px var(--bg,#f4f6f9),0 8px 20px -6px rgba(51,102,255,.6)`}));
+
+    // ---- leaderboard ----
+    const lb=[
+      {rank:1,name:'Aarav Mehta',role:'SRE',score:96,badge:'DevOps Master',bc:'#7b5cff'},
+      {rank:2,name:'Lina Park',role:'Platform Eng',score:93,badge:'Gold',bc:'#f0a020'},
+      {rank:3,name:'Diego Santos',role:'Cloud Eng',score:91,badge:'Gold',bc:'#f0a020'},
+      {rank:4,name:(f.name||'You'),role:(f.role||'DevOps Engineer'),score:overall,badge:badgeTier.name,bc:badgeTier.color,me:true},
+      {rank:5,name:'Sam Okoro',role:'DevSecOps',score:74,badge:'Silver',bc:'#9aa6bd'},
+      {rank:6,name:'Mira Cohen',role:'DevOps Engineer',score:69,badge:'Bronze',bc:'#c08457'}
+    ];
+    const lbRows=lb.slice().sort((a,b)=>b.score-a.score).map((r,i)=>({...r,rank:i+1,
+      rowStyle:`display:grid;grid-template-columns:48px 1fr 130px 120px 70px;align-items:center;gap:14px;padding:14px 18px;border-radius:14px;border:1px solid ${r.me?'var(--brand,#3366ff)':'var(--border,#e4e8f0)'};background:${r.me?'var(--brand-soft,#eaf0ff)':'var(--surface,#fff)'}`,
+      badgeStyle:`display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-family:'JetBrains Mono';font-size:11px;font-weight:600;background:${r.bc}1f;color:${r.bc}`}));
+
+    return {
+      rootRef:this.setRoot, threadRef:this.setThread,
+      logoSrc: dark ? 'assets/logo-dark.png' : 'assets/logo.png',
+      themeIcon: dark ? '☀' : '☾',
+      toggleDark:()=>this.toggleDark(),
+      steps,
+      isRegister:screen==='register', isCategories:screen==='categories',
+      isInterview:screen==='interview', isReport:screen==='report', isRoadmap:screen==='roadmap',
+      isLeaderboard:screen==='leaderboard',
+      // register
+      form:f, setName:e=>this.setName(e), setEmail:e=>this.setEmail(e),
+      levels, roles, goCategories:()=>{ if(regReady) this.go('categories'); },
+      regBtnStyle, regBtnLabel: regReady?'Continue to topics':'Fill name · level · role',
+      // categories
+      cats, selCount:st.selected.length, goRegister:()=>this.go('register'),
+      startInterview:()=>this.startInterview(), startBtnStyle,
+      // interview
+      messages, thinking:st.thinking, qNum, qTotal, qProgress:Math.round(qNum/qTotal*100)+'%',
+      roundLabel: f.role?('Round · '+f.role):'Technical round',
+      currentOptions, answered:st.answered, showOptions: screen==='interview',
+      nextQuestion:()=>this.nextQuestion(), nextLabel: isLastQ?'Finish & see report →':'Next question →',
+      liveSignals, scenarioIcon:sc.icon, scenarioTitle:sc.title, scenarioDesc:sc.desc,
+      finishInterview:()=>this.finishInterview(),
+      // report
+      candidateName: f.name || 'Candidate', candidateRole: f.role || 'DevOps Engineer',
+      overall, overallLabel: overall>=85?'Interview-ready':overall>=70?'Nearly there':'Keep practicing',
+      ringStyle, badgeName:badgeTier.name, badgeColor:badgeTier.color,
+      scoreRows, strengths, improve, recommend,
+      goRoadmap:()=>this.go('roadmap'), goLeaderboard:()=>this.go('leaderboard'),
+      restart:()=>this.setState({screen:'register',idx:0,messages:[],picked:null,answered:false,answers:[],revealed:false}),
+      // roadmap
+      roadNodes,
+      // leaderboard
+      lbRows, myBadge:badgeTier.name, myBadgeColor:badgeTier.color
+    };
+  }
+}
+</script>
+</body>
+</html>
