@@ -1,4 +1,4 @@
-# 🎯 DevOps Interview Simulator
+# DevOps Interview Simulator
 
 > **AI-Powered Mock Interview Platform** — Containerized with Docker, served via Nginx on port 80
 
@@ -8,7 +8,7 @@
 
 ---
 
-## 📌 Table of Contents
+## Table of Contents
 
 - [About the Project](#-about-the-project)
 - [Project Structure](#-project-structure)
@@ -39,15 +39,15 @@ This project was created as a demonstration of end-to-end Docker containerizatio
 
 ### Key Highlights
 
-- ✅ Zero runtime dependencies (no Node.js, no Python needed on the server)
-- ✅ Lightweight Nginx-based container using the `nginx:alpine` base image
-- ✅ Single command deployment anywhere Docker is installed
-- ✅ Pushed and publicly available on Docker Hub
-- ✅ Full GitHub repository with version control
+- Zero runtime dependencies (no Node.js, no Python needed on the server)
+- Lightweight Nginx-based container using the `nginx:alpine` base image
+- Single command deployment anywhere Docker is installed
+- Pushed and publicly available on Docker Hub
+- Full GitHub repository with version control
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 interview-simulator/
@@ -78,7 +78,7 @@ interview-simulator/
 
 ---
 
-## 🏗 Architecture Overview
+## Architecture Overview
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -125,7 +125,7 @@ interview-simulator/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -188,7 +188,7 @@ http://localhost
 
 ---
 
-## 🐳 Docker Workflow
+## Docker Workflow
 
 ### 1. Build the Image
 
@@ -284,7 +284,7 @@ docker load < devops-interview-simulator.tar
 
 ---
 
-## 📄 Dockerfile Explained
+## Dockerfile Explained
 
 ```dockerfile
 # Use the official lightweight Nginx image based on Alpine Linux
@@ -313,7 +313,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ---
 
-## ⚙️ CI/CD Pipeline (GitHub Actions)
+## CI/CD Pipeline (GitHub Actions)
 
 A GitHub Actions workflow can automate the entire build and push process on every `git push`.
 
@@ -359,7 +359,7 @@ Now every push to `main` automatically builds and publishes the image.
 
 ---
 
-## 🧰 Useful Docker Commands
+## Useful Docker Commands
 
 ```bash
 # List all running containers
@@ -392,7 +392,7 @@ docker inspect devops-simulator
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome. To contribute:
 
@@ -404,13 +404,3 @@ Contributions are welcome. To contribute:
 
 ---
 
-## 👤 Author
-
-**Haseeb** — DevOps Trainer & Engineer
-
-- Docker Hub: [haseebspaniard](https://hub.docker.com/u/haseebspaniard)
-- GitHub: [haseebspaniard](https://github.com/haseebspaniard)
-
----
-
-> **Build once. Run anywhere. That's the power of Docker.**
